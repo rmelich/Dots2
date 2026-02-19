@@ -1,0 +1,50 @@
+name: Build Android APK (Buildozer)
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "Dots2/**"
+      - ".github/workflows/android.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install system dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y \
+            git zip unzip openjdk-17-jdk \
+            build-essential autoconf automake libtool pkg-config \
+            libffi-dev libssl-dev zlib1g-dev \
+            python3-venv
+
+      - name: Install Buildozer (venv)
+        run: |
+          python -m venv venv
+          . venv/bin/activate
+          pip install -U pip setuptools wheel
+          pip install -U buildozer cython
+
+      - name: Build APK
+        working-directory: Dots2
+        run: |
+          . ../venv/bin/activate
+          buildozer android clean
+          buildozer -v android debug
+
+      - name: Upload APK artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Dots2-APK
+          path: Dots2/bin/*.apk
