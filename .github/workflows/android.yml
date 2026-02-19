@@ -35,6 +35,25 @@ jobs:
           . venv/bin/activate
           pip install -U pip setuptools wheel
           pip install -U buildozer cython
+      - name: Install Android SDK (cmdline-tools, build-tools, platforms)
+        run: |
+          set -e
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+
+          # Download Android commandline tools
+          curl -fsSL https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip -o cmdline-tools.zip
+          unzip -q cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+          mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
+
+          export PATH="$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH"
+
+          # Accept licenses (this is often why tools don't download)
+          yes | sdkmanager --licenses
+
+          # Install required components (aidl is inside build-tools)
+          sdkmanager "platform-tools" "platforms;android-33" "build-tools;33.0.2"
 
 
       - name: Build APK
