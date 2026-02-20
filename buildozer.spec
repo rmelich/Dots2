@@ -6,7 +6,7 @@ version = 0.1.0
 
 source.dir = .
 source.include_exts = py,wav,png,jpg,jpeg,ttf,txt,json,ogg
-requirements = python3,pygame,cython
+requirements = python3==3.10.13,pygame,cython
 
 android.archs = arm64-v8a,armeabi-v7a
 android.api = 33
@@ -18,3 +18,4 @@ android.ndk_path = /home/runner/android-ndk
 android.ndk = 25b
 
 log_level = 2
+
