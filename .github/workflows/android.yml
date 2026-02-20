@@ -67,7 +67,7 @@ jobs:
 
       - name: Build APK
         run: |
-          . /venv/bin/activate
+          . venv/bin/activate
           buildozer -v android debug
 
       - name: Upload APK artifact
