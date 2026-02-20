@@ -63,7 +63,7 @@ jobs:
           python -m venv venv
           . venv/bin/activate
           pip install -U pip setuptools wheel
-          pip install -U buildozer cython
+          pip install -U "Cython==0.29.36" buildozer
 
       - name: Build APK
         run: |
