@@ -62,8 +62,9 @@ jobs:
           pip install -U buildozer cython
 
       - name: Build APK
+        working-directory: Dots2
         run: |
-          . venv/bin/activate
+          . ../venv/bin/activate
           buildozer -v android debug
 
       - name: Upload APK artifact
